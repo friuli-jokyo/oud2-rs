@@ -1,0 +1,10 @@
+[package]
+name = "oud2"
+version = "0.1.0"
+edition = "2021"
+authors = ["friuli-jokyo"]
+license-file = "LICENSE"
+description = "OuDiaSecond (.oud2) file handler"
+repository = "https://github.com/friuli-jokyo/oud2-rs"
+
+[dependencies]
