@@ -1,9 +1,12 @@
+//! Serialize a Rust data structure into .oud2 data.
+
 use std::io;
 
 use serde::ser::{self};
 
 use crate::error::Error;
 
+/// A structure for serializing Rust values into .oud2 data.
 pub struct Serializer<W> {
     writer: W,
     formatter: Formatter,
@@ -13,6 +16,7 @@ impl<W> Serializer<W>
 where
     W: std::io::Write,
 {
+    /// Creates a new serializer.
     pub fn new(writer: W) -> Self {
         Serializer {
             writer,
@@ -273,6 +277,7 @@ where
     }
 }
 
+/// A structure for formatting .oud2 data.
 #[derive(Clone, Debug)]
 pub struct Formatter {
     directory_depth: usize,
@@ -524,6 +529,13 @@ where
     }
 }
 
+/// Serialize the given data structure as .oud2 into the I/O stream.
+///
+///  # Errors
+///
+/// Serialization can fail if
+/// - `T`'s implementation of `Serialize` decides to fail.
+/// - Root type is not a struct.
 pub fn to_writer<W, T>(writer: W, value: &T) -> Result<(), Error>
 where
     W: io::Write,
@@ -533,6 +545,12 @@ where
     value.serialize(&mut ser)
 }
 
+/// Serialize the given data structure as .oud2 into a byte vector.
+///
+/// # Errors
+/// Serialization can fail if
+/// - `T`'s implementation of `Serialize` decides to fail.
+/// - Root type is not a struct.
 pub fn to_vec<T>(value: &T) -> Result<Vec<u8>, Error>
 where
     T: serde::Serialize,
@@ -542,6 +560,12 @@ where
     Ok(buf)
 }
 
+/// Serialize the given data structure as .oud2 into String.
+///
+/// # Errors
+/// Serialization can fail if
+/// - `T`'s implementation of `Serialize` decides to fail.
+/// - Root type is not a struct.
 pub fn to_string<T>(value: &T) -> Result<String, Error>
 where
     T: serde::Serialize,

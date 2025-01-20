@@ -1,4 +1,6 @@
-// #![deny(missing_docs)]
+//! # oud2
+
+#![deny(missing_docs)]
 
 mod error;
 pub mod ser;
