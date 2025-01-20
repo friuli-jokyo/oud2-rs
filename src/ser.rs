@@ -415,7 +415,7 @@ impl Formatter {
         Ok(())
     }
 
-    /// Write `.\n` at the end of a directory.
+    /// Write `.` at the end of a directory.
     #[inline]
     fn directory_end<W>(&mut self, writer: &mut W) -> io::Result<()>
     where
