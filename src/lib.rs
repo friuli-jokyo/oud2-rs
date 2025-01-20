@@ -1,6 +1,5 @@
 // #![deny(missing_docs)]
 
-mod de;
 mod error;
 pub mod ser;
 
