@@ -8,3 +8,9 @@ description = "OuDiaSecond (.oud2) file handler"
 repository = "https://github.com/friuli-jokyo/oud2-rs"
 
 [dependencies]
+itoa = "1.0.14"
+ryu = "1.0.18"
+serde = { version = "1.0.217", default-features = false }
+
+[dev-dependencies]
+serde = { version = "1.0.194", features = ["derive"] }
