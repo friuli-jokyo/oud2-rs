@@ -6,6 +6,7 @@ use std::sync::Arc;
 pub enum Error {
     Io(Arc<IoError>),
     RootTypeNotStruct,
+    Unsupported(&'static str),
 }
 
 impl From<IoError> for Error {
@@ -19,6 +20,7 @@ impl fmt::Display for Error {
         match self {
             Error::Io(err) => write!(f, "{}", err),
             Error::RootTypeNotStruct => write!(f, "Root type must be a struct"),
+            Error::Unsupported(msg) => write!(f, "Type `{}` is unsupported", msg),
         }
     }
 }

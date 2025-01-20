@@ -147,7 +147,7 @@ where
 
     #[inline]
     fn serialize_bytes(self, _v: &[u8]) -> Result<Self::Ok, Self::Error> {
-        Err(ser::Error::custom("bytes is not supported"))
+        Err(Error::Unsupported("bytes"))
     }
 
     #[inline]
@@ -199,15 +199,15 @@ where
     #[inline]
     fn serialize_newtype_variant<T>(
         self,
-        name: &'static str,
+        _name: &'static str,
         _variant_index: u32,
-        variant: &'static str,
-        value: &T,
+        _variant: &'static str,
+        _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
         T: ?Sized + serde::Serialize,
     {
-        todo!()
+        Err(Error::Unsupported("newtype variant"))
     }
 
     #[inline]
@@ -220,7 +220,7 @@ where
 
     #[inline]
     fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> {
-        Err(ser::Error::custom("tuple is not unsupported"))
+        Err(Error::Unsupported("tuple"))
     }
 
     fn serialize_tuple_struct(
@@ -228,21 +228,21 @@ where
         _name: &'static str,
         _len: usize,
     ) -> Result<Self::SerializeTupleStruct, Self::Error> {
-        Err(ser::Error::custom("tuple struct is not unsupported"))
+        Err(Error::Unsupported("tuple struct"))
     }
 
     fn serialize_tuple_variant(
         self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-        len: usize,
+        _name: &'static str,
+        _variant_index: u32,
+        _variant: &'static str,
+        _len: usize,
     ) -> Result<Self::SerializeTupleVariant, Self::Error> {
-        todo!()
+        Err(Error::Unsupported("tuple variant"))
     }
 
     fn serialize_map(self, _len: Option<usize>) -> Result<Self::SerializeMap, Self::Error> {
-        Err(ser::Error::custom("map is not supported"))
+        Err(Error::Unsupported("map"))
     }
 
     fn serialize_struct(
@@ -261,19 +261,19 @@ where
 
     fn serialize_struct_variant(
         self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-        len: usize,
+        _name: &'static str,
+        _variant_index: u32,
+        _variant: &'static str,
+        _len: usize,
     ) -> Result<Self::SerializeStructVariant, Self::Error> {
-        todo!()
+        Err(Error::Unsupported("struct variant"))
     }
 
     fn collect_str<T>(self, value: &T) -> Result<Self::Ok, Self::Error>
     where
         T: ?Sized + std::fmt::Display,
     {
-        todo!()
+        self.serialize_str(&value.to_string())
     }
 }
 
