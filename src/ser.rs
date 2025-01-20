@@ -407,7 +407,6 @@ impl Formatter {
     where
         W: ?Sized + io::Write,
     {
-        println!("dir_count: {:?}, begin", self.directory_depth);
         if self.directory_depth != 0 {
             writer.write_all(b".\n")?
         }
@@ -422,7 +421,6 @@ impl Formatter {
         W: ?Sized + io::Write,
     {
         self.directory_depth -= 1;
-        println!("dir_count: {:?}, end", self.directory_depth);
         if self.directory_depth != 0 {
             writer.write_all(b".")?
         }
@@ -495,10 +493,6 @@ where
         self.ser.writer.write_all(key.as_bytes())?;
         value.serialize(&mut *self.ser)?;
         self.ser.formatter.directory_names.pop();
-        println!(
-            "dir_count: {:?}, dirs: {:?}",
-            self.ser.formatter.directory_depth, self.ser.formatter.directory_names
-        );
         self.ser.writer.write_all(b"\n").map_err(Error::from)
     }
 
