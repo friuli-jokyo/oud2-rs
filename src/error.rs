@@ -7,6 +7,14 @@ pub enum Error {
     Io(Arc<IoError>),
     RootTypeNotStruct,
     Unsupported(&'static str),
+    Message(String),
+    UnexpectedEof,
+    ExpectedEquals,
+    ExpectedNewline,
+    ExpectedDot,
+    InvalidBool,
+    InvalidNumber,
+    TrailingCharacters,
 }
 
 impl From<IoError> for Error {
@@ -21,6 +29,14 @@ impl fmt::Display for Error {
             Error::Io(err) => write!(f, "{}", err),
             Error::RootTypeNotStruct => write!(f, "Root type must be a struct"),
             Error::Unsupported(msg) => write!(f, "Type `{}` is unsupported", msg),
+            Error::Message(msg) => write!(f, "{}", msg),
+            Error::UnexpectedEof => write!(f, "Unexpected end of file"),
+            Error::ExpectedEquals => write!(f, "Expected '=' character"),
+            Error::ExpectedNewline => write!(f, "Expected newline character"),
+            Error::ExpectedDot => write!(f, "Expected '.' character"),
+            Error::InvalidBool => write!(f, "Invalid boolean value"),
+            Error::InvalidNumber => write!(f, "Invalid number"),
+            Error::TrailingCharacters => write!(f, "Trailing characters after value"),
         }
     }
 }
@@ -37,9 +53,12 @@ impl std::error::Error for Error {
 impl serde::ser::Error for Error {
     fn custom<T: std::fmt::Display>(msg: T) -> Self {
         eprintln!("{}", msg);
-        Error::Io(Arc::new(IoError::new(
-            std::io::ErrorKind::Other,
-            format!("{}", msg),
-        )))
+        Error::Io(Arc::new(IoError::other(format!("{}", msg))))
+    }
+}
+
+impl serde::de::Error for Error {
+    fn custom<T: std::fmt::Display>(msg: T) -> Self {
+        Error::Message(format!("{}", msg))
     }
 }
